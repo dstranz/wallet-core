@@ -145,7 +145,7 @@ public final class KeyStore {
         }
         let url = makeAccountURL()
         let wallet = Wallet(keyURL: url, key: newKey)
-        let _ = try wallet.getAccount(password: password, coin: coin)
+        _ = try wallet.getAccount(password: password, coin: coin)
         wallets.append(wallet)
 
         try save(wallet: wallet)
@@ -257,9 +257,11 @@ public final class KeyStore {
             throw Error.accountNotFound
         }
 
-        if let mnemonic = checkMnemonic(privateKeyData), let key = StoredKey.importHDWallet(mnemonic: mnemonic, name: wallet.key.name, password: newPassword, coin: coins[0]) {
+        if let mnemonic = checkMnemonic(privateKeyData),
+            let key = StoredKey.importHDWallet(mnemonic: mnemonic, name: wallet.key.name, password: newPassword, coin: coins[0]) {
             wallets[index].key = key
-        } else if let key = StoredKey.importPrivateKey(privateKey: privateKeyData, name: wallet.key.name, password: newPassword, coin: coins[0]) {
+        } else if let key = StoredKey.importPrivateKey(
+                privateKey: privateKeyData, name: wallet.key.name, password: newPassword, coin: coins[0]) {
             wallets[index].key = key
         } else {
             throw Error.invalidKey
@@ -327,6 +329,10 @@ public final class KeyStore {
         }
 
         let components = Calendar(identifier: .iso8601).dateComponents(in: timeZone, from: date)
-        return String(format: "%04d-%02d-%02dT%02d-%02d-%02d.%09d%@", components.year!, components.month!, components.day!, components.hour!, components.minute!, components.second!, components.nanosecond!, tz)
+        return String(format: "%04d-%02d-%02dT%02d-%02d-%02d.%09d%@",
+                      components.year!, components.month!,
+                      components.day!, components.hour!,
+                      components.minute!, components.second!,
+                      components.nanosecond!, tz)
     }
 }
